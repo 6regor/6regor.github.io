@@ -1,5 +1,6 @@
 var game = new Phaser.Game(480, 420, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
+
 function preload() {
     
     game.load.image('bedroom_background', 'bedroom_background.png');
@@ -14,6 +15,19 @@ function preload() {
     game.load.spritesheet('potplant', 'potplant_sprite_sheet.png', 36, 48, 2);
     game.load.image('facebook', 'facebook_screen.png');
     game.load.spritesheet('me', 'me_sprite_sheet.png', 24, 48, 12);
+    game.load.image('bass', 'bass.png');
+    game.load.image('bassbottom', 'bass_bottom.png');
+    game.load.image('bassoverlap', 'bass_overlap.png');
+    game.load.image('playbass?', 'playbass.png');
+    game.load.image('stairs', 'stair.png');
+    game.load.image('stairtop', 'stairtop.png');
+    game.load.image('compmssg', 'compmssg.png');
+    game.load.image('info', 'info.png');
+    game.load.image('infosheet', 'infosheet.png');
+    
+    game.load.audio('bassnotes', [ 'bassnotes.mp3', 'bassnotes.ogg' ]);
+    game.load.audio('soundtrack', [ 'normal life soundtrack.mp3', 'normal life soundtrack.ogg' ]);
+    game.load.audio('potsmash', [ 'potsmash.mp3', 'potsmash.ogg' ]);
     
 }
 
@@ -24,9 +38,26 @@ var Zkey;
 var Xkey;
 var pausegame;
 var fbmssg;
-var fbook;
+var fx;
+var onekey;
+var twokey;
+var threekey;
+var fourkey;
+var fivekey;
+var music;
+var ikey;
+var potsmash;
 
 function create() {
+    
+    this.game.scale.pageAlignHorizontally = true;
+    this.game.scale.pageAlignVertically = true;
+    this.game.scale.refresh();
+    
+    music = game.add.audio('soundtrack',1,true);
+    music.play('',0,3,true);
+    
+    potsmash = game.add.audio('potsmash');
     
     
     TLwall = game.add.sprite(0, 0, 'topleftwall');
@@ -34,13 +65,6 @@ function create() {
     TLwall.body.immovable = true;
     
     game.add.sprite(0, 0, 'bedroom_background');
-    
-    plant = game.add.sprite(200, 230, 'potplant');
-    game.physics.enable(plant, Phaser.Physics.ARCADE);
-    plant.body.drag.x = 500;
-    plant.body.drag.y = 500;
-    
-    
 
     Bwall = game.add.sprite(0, 360, 'bottomwall');
     game.physics.enable(Bwall, Phaser.Physics.ARCADE);
@@ -70,13 +94,48 @@ function create() {
     game.physics.enable(compovr, Phaser.Physics.ARCADE);
     compovr.body.immovable = true;
     
-    player = game.add.sprite(260, game.world.height - 150, 'me');
+    bassoverlap = game.add.sprite(337, 276, 'bassoverlap');
+    game.physics.enable(bassoverlap, Phaser.Physics.ARCADE);
+    bassoverlap.body.immovable = true;
+    
+    stairtop = game.add.sprite(0, 175, 'stairtop');
+    game.physics.enable(stairtop, Phaser.Physics.ARCADE);
+    stairtop.body.immovable = true;
+    
+    stairs = game.add.sprite(0, 175, 'stairs');
+    game.physics.enable(stairs, Phaser.Physics.ARCADE);
+    stairs.body.immovable = true;
+    
+    plant = game.add.sprite(150, 220, 'potplant');
+    game.physics.enable(plant, Phaser.Physics.ARCADE);
+    plant.body.drag.x = 500;
+    plant.body.drag.y = 500;
+    
+    player = game.add.sprite(260, game.world.height - 130, 'me');
     game.physics.arcade.enable(player, Phaser.Physics.ARCADE);
+    
+    bass = game.add.sprite(348, 252, 'bass');
+    game.physics.enable(bass, Phaser.Physics.ARCADE);
+    bass.body.immovable = true;
+    
+    bassbottom = game.add.sprite(348, 316, 'bassbottom');
+    game.physics.enable(bassbottom, Phaser.Physics.ARCADE);
+    bassbottom.body.immovable = true;
+    
+    info = game.add.sprite(0, 0, 'info');
+    game.physics.enable(info, Phaser.Physics.ARCADE);
+    info.body.immovable = true;
     
     cursors = game.input.keyboard.createCursorKeys();
     Akey = game.input.keyboard.addKey(Phaser.Keyboard.A);
     Zkey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
     Xkey = game.input.keyboard.addKey(Phaser.Keyboard.X);
+    onekey = game.input.keyboard.addKey(Phaser.Keyboard.S);
+    twokey = game.input.keyboard.addKey(Phaser.Keyboard.D);
+    threekey = game.input.keyboard.addKey(Phaser.Keyboard.F);
+    fourkey = game.input.keyboard.addKey(Phaser.Keyboard.G);
+    fivekey = game.input.keyboard.addKey(Phaser.Keyboard.H);
+    ikey = game.input.keyboard.addKey(Phaser.Keyboard.I);
     
     
     player.animations.add('left', [3, 4, 3, 5], 13, true);
@@ -91,6 +150,17 @@ function create() {
     
     plant.animations.add('break', [1], 20, true);
     plant.animations.add('broken', [0], 20, true);
+    
+    bassmusic = game.add.audio('bassnotes', 1, true);
+    
+    bassmusic.addMarker('one', 0, 3.8);
+    bassmusic.addMarker('two', 4, 3.8);
+    bassmusic.addMarker('three', 8, 3.8);
+    bassmusic.addMarker('four', 12, 3.8);
+    bassmusic.addMarker('five', 16, 3.8);
+    
+
+    
     
 
 
@@ -109,12 +179,18 @@ function update() {
     game.physics.arcade.overlap(compovr, player, cmscrr);
     game.physics.arcade.collide(plant, player);
     game.physics.arcade.collide(TLwall, plant, plantbreak);
+    game.physics.arcade.collide(stairtop, plant, plantbreak);
     game.physics.arcade.collide(Bwall, plant, plantbreak);
+    game.physics.arcade.collide(bassbottom, plant, plantbreak);
     game.physics.arcade.collide(door, plant, plantbreak);
     game.physics.arcade.collide(Lwall, plant, plantbreak);
     game.physics.arcade.collide(Rwall, plant, plantbreak);
     game.physics.arcade.collide(TRwall, plant, plantbreak);
     game.physics.arcade.collide(compscrn, plant, plantbreak);
+    game.physics.arcade.collide(bassbottom, player);
+    game.physics.arcade.overlap(bassoverlap, player, playbass);
+    
+
     
 
 
@@ -189,11 +265,14 @@ function update() {
 
     }
     
-    
-    
-
-    
+    if (ikey.isDown){
+        var infosheet = game.add.sprite(127, 100, 'infosheet');
+        Xkey.onDown.add(closeinfo);
         
+        function closeinfo(){
+            infosheet.kill();
+        }
+    }   
 
 
 }
@@ -201,22 +280,98 @@ function update() {
 function plantbreak(TLwall, plant) {
 
     plant.animations.play('break');
+    potsmash.play();
+    plant.body.immovable = true;
 }
 
 
 function cmscrr(compovr, player) {
-        
-    if (Zkey.isDown)
-    {
-        fbmssg = true;
-        fbook = game.add.sprite(0, 0, 'facebook');
+    
+    var compmssg = game.add.sprite(0, 0, 'compmssg');
+    Xkey.onDown.add(closecomputer);
+    Zkey.onDown.add(openfacebook);
+    
+    function openfacebook(){
+        game.addsprite(0, 0, 'facebook');
+    //Xkey.onDown.add(closefacebook);
+    //function closefacebook(){
+      //  fbook.kill();
+
     }
-    if (Xkey.isDown && fbmssg === true)
-    {
-        fbmssg = false;
-        fbook.kill();
+    
+    function closecomputer(){
+        compmssg.kill();
     }
 
 }
 
 
+    
+    //}
+
+
+function playbass(bassoverlap, player) {
+    onekey.onDown.add(playnoteone);
+    twokey.onDown.add(playnotetwo);
+    threekey.onDown.add(playnotethree);
+    fourkey.onDown.add(playnotefour);
+    fivekey.onDown.add(playnotefive);
+    var playthebass = game.add.sprite(0, 0, 'playbass?');
+    Xkey.onDown.add(closemessage);
+    
+    function closemessage(){
+        playthebass.kill();
+    }
+
+    
+
+    
+
+    //if (onekey.isDown)
+    //{
+       // bassmusic.play('five');
+
+        //var playthebass = game.add.sprite(0, 0, 'playbass?');
+        
+        //function stopplayingbass(playthebass){
+            //if (Xkey.isDown){
+                //playthebass.kill();
+            //}
+        //}
+   // }
+    
+
+
+}
+
+function playnoteone(){
+    if(game.physics.arcade.overlap(bassoverlap, player)){
+        bassmusic.play('five', 0, 4);
+    }
+}
+
+function playnotetwo(){
+    if(game.physics.arcade.overlap(bassoverlap, player)){
+        bassmusic.play('one', 0, 4);
+    }
+}
+
+function playnotethree(){
+    if(game.physics.arcade.overlap(bassoverlap, player)){
+        bassmusic.play('two', 0, 4);
+    }
+}
+
+function playnotefour(){
+    if(game.physics.arcade.overlap(bassoverlap, player)){
+        bassmusic.play('three', 0, 4);
+    }
+}
+
+function playnotefive(){
+    if(game.physics.arcade.overlap(bassoverlap, player)){
+        bassmusic.play('four',0, 5);
+    }
+}
+
+    
