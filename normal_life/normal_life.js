@@ -24,6 +24,8 @@ function preload() {
     game.load.image('compmssg', 'compmssg.png');
     game.load.image('info', 'info.png');
     game.load.image('infosheet', 'infosheet.png');
+    game.load.image('prawn', 'prawn.png');
+    game.load.image('prawnspot', 'prawnspot.png');
     
     game.load.audio('bassnotes', [ 'bassnotes.mp3', 'bassnotes.ogg' ]);
     game.load.audio('soundtrack', [ 'normal life soundtrack.mp3', 'normal life soundtrack.ogg' ]);
@@ -111,6 +113,10 @@ function create() {
     plant.body.drag.x = 500;
     plant.body.drag.y = 500;
     
+    prawnspot = game.add.sprite(200, 350, 'prawnspot');
+    game.physics.enable(prawnspot, Phaser.Physics.ARCADE);
+    prawnspot.body.immovable = true;
+    
     player = game.add.sprite(260, game.world.height - 130, 'me');
     game.physics.arcade.enable(player, Phaser.Physics.ARCADE);
     
@@ -189,7 +195,7 @@ function update() {
     game.physics.arcade.collide(compscrn, plant, plantbreak);
     game.physics.arcade.collide(bassbottom, player);
     game.physics.arcade.overlap(bassoverlap, player, playbass);
-    
+    game.physics.arcade.overlap(prawnspot, player, thought);
 
     
 
@@ -374,4 +380,14 @@ function playnotefive(){
     }
 }
 
+function thought(){
+    var thght = game.add.sprite(90, 363, 'prawn');
+    Xkey.onDown.add(closethought);
+    
+    function closethought(){
+        thght.kill();
+    }
+}
+        
+    
     
