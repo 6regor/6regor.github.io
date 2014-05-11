@@ -49,6 +49,7 @@ var fivekey;
 var music;
 var ikey;
 var potsmash;
+var prawnspot;
 
 function create() {
     
@@ -382,6 +383,7 @@ function playnotefive(){
 
 function thought(){
     var thght = game.add.sprite(90, 363, 'prawn');
+    prawnspot.kill();
     Xkey.onDown.add(closethought);
     
     function closethought(){
