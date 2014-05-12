@@ -6,8 +6,8 @@ var game = new Phaser.Game(480, 420, Phaser.AUTO, '', { preload: preload, create
 
 function preload() {
     
-    this.load.image('loadingBar', 'full.png');
-    this.loadingBar = this.add.sprite(300, 300, 'loadingBar');
+    this.load.image('loadingBar', 'fulls.png');
+    this.loadingBar = this.add.sprite(600, 350, 'loadingBar');
     this.load.setPreloadSprite(this.loadingBar);
     
     
