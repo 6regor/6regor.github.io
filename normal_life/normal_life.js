@@ -3,11 +3,13 @@ var game = new Phaser.Game(480, 420, Phaser.AUTO, '', { preload: preload, create
 
 
 
-
 function preload() {
+    this.game.scale.pageAlignHorizontally = true;
+    this.game.scale.pageAlignVertically = true;
+    this.game.scale.refresh();
     
     this.load.image('loadingBar', 'fulls.png');
-    this.loadingBar = this.add.sprite(600, 350, 'loadingBar');
+    this.loadingBar = this.add.sprite(220, 200, 'loadingBar');
     this.load.setPreloadSprite(this.loadingBar);
     
     
@@ -61,9 +63,7 @@ var prawnspot;
 
 function create() {
     
-    this.game.scale.pageAlignHorizontally = true;
-    this.game.scale.pageAlignVertically = true;
-    this.game.scale.refresh();
+
     
     music = game.add.audio('soundtrack', 1, true);
     music.play('', 0, 3, true);
@@ -140,6 +140,8 @@ function create() {
     info = game.add.sprite(0, 0, 'info');
     game.physics.enable(info, Phaser.Physics.ARCADE);
     info.body.immovable = true;
+    
+    
     
     cursors = game.input.keyboard.createCursorKeys();
     Akey = game.input.keyboard.addKey(Phaser.Keyboard.A);
