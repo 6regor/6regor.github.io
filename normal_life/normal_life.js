@@ -1,7 +1,15 @@
 var game = new Phaser.Game(480, 420, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 
+
+
+
 function preload() {
+    
+    this.load.image('loadingBar', 'full.png');
+    this.loadingBar = this.add.sprite(300, 300, 'loadingBar');
+    this.load.setPreloadSprite(this.loadingBar);
+    
     
     game.load.image('bedroom_background', 'bedroom_background.png');
     game.load.image('topleftwall', 'tpleftwall.png');
@@ -35,7 +43,7 @@ function preload() {
 
 var player;
 var cursors;
-var Akey; 
+var Akey;
 var Zkey;
 var Xkey;
 var pausegame;
@@ -57,8 +65,8 @@ function create() {
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
     
-    music = game.add.audio('soundtrack',1,true);
-    music.play('',0,3,true);
+    music = game.add.audio('soundtrack', 1, true);
+    music.play('', 0, 3, true);
     
     potsmash = game.add.audio('potsmash');
     
@@ -174,7 +182,7 @@ function create() {
 
 }
 
-function update() { 
+function update(){ 
    
     game.physics.arcade.collide(TLwall, player);
     game.physics.arcade.collide(Bwall, player);
@@ -208,8 +216,7 @@ function update() {
     player.body.velocity.x = 0;
     player.body.velocity.y = 0;
 
-    if (cursors.left.isDown)
-    {
+    if (cursors.left.isDown){
         if (Akey.isDown)
         {
             player.body.velocity.x = -170;
