@@ -36,10 +36,18 @@ function preload() {
     game.load.image('infosheet', 'infosheet.png');
     game.load.image('prawn', 'prawn.png');
     game.load.image('prawnspot', 'prawnspot.png');
+    game.load.image('doorlocked', 'doorlocked.png');
+    game.load.spritesheet('bird', 'bird_sprite.png', 30, 75);
+    game.load.image('birdcollide', 'bird collide.png');
+    game.load.image('birdstandbottom', 'birdstandbottom.png');
+    game.load.image('birdoverlap', 'birdoverlap.png');
+    game.load.image('hellotobird', 'hellotobird.png');
+    
     
     game.load.audio('bassnotes', [ 'bassnotes.mp3', 'bassnotes.ogg' ]);
     game.load.audio('soundtrack', [ 'normal life soundtrack.mp3', 'normal life soundtrack.ogg' ]);
     game.load.audio('potsmash', [ 'potsmash.mp3', 'potsmash.ogg' ]);
+    game.load.audio('hellobird', [ 'hellobird.mp3', 'hellobird.ogg' ]);
     
 }
 
@@ -69,6 +77,8 @@ function create() {
     music.play('', 0, 3, true);
     
     potsmash = game.add.audio('potsmash');
+    
+    hellobird = game.add.audio('hellobird');
     
     
     TLwall = game.add.sprite(0, 0, 'topleftwall');
@@ -117,7 +127,7 @@ function create() {
     game.physics.enable(stairs, Phaser.Physics.ARCADE);
     stairs.body.immovable = true;
     
-    plant = game.add.sprite(150, 220, 'potplant');
+    plant = game.add.sprite(180, 220, 'potplant');
     game.physics.enable(plant, Phaser.Physics.ARCADE);
     plant.body.drag.x = 500;
     plant.body.drag.y = 500;
@@ -126,8 +136,23 @@ function create() {
     game.physics.enable(prawnspot, Phaser.Physics.ARCADE);
     prawnspot.body.immovable = true;
     
+    birdstandbottom = game.add.sprite(90, 250, 'birdstandbottom');
+    game.physics.arcade.enable(birdstandbottom, Phaser.Physics.ARCADE);
+    
     player = game.add.sprite(260, game.world.height - 130, 'me');
     game.physics.arcade.enable(player, Phaser.Physics.ARCADE);
+    
+    bird = game.add.sprite(90, 250, 'bird');
+    game.physics.enable(bird, Phaser.Physics.ARCADE);
+    bird.body.immovable = true;
+    
+    birdoverlap = game.add.sprite(90, 250, 'birdoverlap');
+    game.physics.enable(birdoverlap, Phaser.Physics.ARCADE);
+    birdoverlap.body.immovable = true;
+    
+    birdcollide = game.add.sprite(90, 300, 'birdcollide');
+    game.physics.enable(birdcollide, Phaser.Physics.ARCADE);
+    birdcollide.body.immovable = true;
     
     bass = game.add.sprite(348, 252, 'bass');
     game.physics.enable(bass, Phaser.Physics.ARCADE);
@@ -168,6 +193,12 @@ function create() {
     plant.animations.add('break', [1], 20, true);
     plant.animations.add('broken', [0], 20, true);
     
+    bird.animations.add('headbob', [0, 1, 2, 1, 0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 15, true);
+    bird.animations.play('headbob');
+    
+    
+    
+    
     bassmusic = game.add.audio('bassnotes', 1, true);
     
     bassmusic.addMarker('one', 0, 3.8);
@@ -188,12 +219,12 @@ function update(){
    
     game.physics.arcade.collide(TLwall, player);
     game.physics.arcade.collide(Bwall, player);
-    game.physics.arcade.collide(door, player);
+    game.physics.arcade.collide(door, player, lockdoor);
     game.physics.arcade.collide(Lwall, player);
     game.physics.arcade.collide(Rwall, player);
     game.physics.arcade.collide(TRwall, player);
-    game.physics.arcade.collide(compscrn, player);
-    game.physics.arcade.overlap(compovr, player, cmscrr);
+    game.physics.arcade.collide(compscrn, player, cmscrr);
+    game.physics.arcade.overlap(compovr, player);
     game.physics.arcade.collide(plant, player);
     game.physics.arcade.collide(TLwall, plant, plantbreak);
     game.physics.arcade.collide(stairtop, plant, plantbreak);
@@ -204,9 +235,10 @@ function update(){
     game.physics.arcade.collide(Rwall, plant, plantbreak);
     game.physics.arcade.collide(TRwall, plant, plantbreak);
     game.physics.arcade.collide(compscrn, plant, plantbreak);
-    game.physics.arcade.collide(bassbottom, player);
-    game.physics.arcade.overlap(bassoverlap, player, playbass);
+    game.physics.arcade.collide(bassbottom, player, playbass);
+    game.physics.arcade.overlap(bassoverlap, player);
     game.physics.arcade.overlap(prawnspot, player, thought);
+    game.physics.arcade.collide(birdcollide, player, birdspeak);
 
     
 
@@ -293,6 +325,23 @@ function update(){
 
 }
 
+function birdspeak(){
+    var birdmsg = game.add.sprite(0, 0, 'hellotobird');
+    Zkey.onDown.add(speaky);
+    Xkey.onDown.add(closebird);
+    function closebird(){
+        birdmsg.kill();
+    }
+    
+}
+
+function speaky(){
+    if(game.physics.arcade.overlap(birdoverlap, player)){
+        hellobird.play();
+    }
+}
+        
+
 function plantbreak(TLwall, plant) {
 
     plant.animations.play('break');
@@ -325,12 +374,20 @@ function cmscrr(compovr, player) {
 
 }
 
+function lockdoor() {
+    var ll = game.add.sprite(0, 0, 'doorlocked');
+    Xkey.onDown.add(closedoormsg);
+    
+    function closedoormsg(){
+        ll.kill();
+    }
+}
 
     
     //}
 
 
-function playbass(bassoverlap, player) {
+function playbass() {
     onekey.onDown.add(playnoteone);
     twokey.onDown.add(playnotetwo);
     threekey.onDown.add(playnotethree);
