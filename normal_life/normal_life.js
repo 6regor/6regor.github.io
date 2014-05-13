@@ -2,16 +2,16 @@ var game = new Phaser.Game(480, 420, Phaser.AUTO, '', { preload: preload, create
 
 
 
+preloadBar: Phaser.Sprite;
 
 function preload() {
     this.game.scale.pageAlignHorizontally = true;
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
     
-    this.load.image('loadingBar', 'fulls.png');
-    this.loadingBar = this.add.sprite(220, 200, 'loadingBar');
-    this.load.setPreloadSprite(this.loadingBar);
-    
+    this.load.image('preloadBar', 'fulls.png');
+    this.preloadBar = this.add.sprite(220, 200, 'preloadBar');
+    this.load.setPreloadSprite(this.preloadBar);
     
     game.load.image('bedroom_background', 'bedroom_background.png');
     game.load.image('topleftwall', 'tpleftwall.png');
@@ -300,23 +300,27 @@ function plantbreak(TLwall, plant) {
     plant.body.immovable = true;
 }
 
-
 function cmscrr(compovr, player) {
     
     var compmssg = game.add.sprite(0, 0, 'compmssg');
-    Xkey.onDown.add(closecomputer);
     Zkey.onDown.add(openfacebook);
-    
-    function openfacebook(){
-        game.addsprite(0, 0, 'facebook');
-    //Xkey.onDown.add(closefacebook);
-    //function closefacebook(){
-      //  fbook.kill();
+    Xkey.onDown.add(closecomputer);
 
-    }
+
     
     function closecomputer(){
         compmssg.kill();
+
+    }
+    
+        
+    function openfacebook(){
+        var fbook = game.addsprite(1, 1, 'facebook');
+        Xkey.onDown.add(closefacebook);
+        function closefacebook(){
+            fbook.kill();
+        }
+
     }
 
 }
