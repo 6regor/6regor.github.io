@@ -49,7 +49,19 @@ function preload() {
     game.load.audio('potsmash', [ 'potsmash.mp3', 'potsmash.ogg' ]);
     game.load.audio('hellobird', [ 'hellobird.mp3', 'hellobird.ogg' ]);
     
+
+
+
+    game.load.image('window_collide', 'window_collide.png');
+    game.load.image('window_screen', 'window_screen.png');
+    game.load.spritesheet('fountain', 'fountain_spritesheet.png', 90, 90);
+    game.load.spritesheet('sky', 'clouds_spritesheet_copy.png', 480, 82);
+    game.load.image('lookout', 'lookoutwindow.png');
+
+    
 }
+
+
 
 var player;
 var cursors;
@@ -69,6 +81,8 @@ var ikey;
 var potsmash;
 var prawnspot;
 
+
+
 function create() {
     
 
@@ -86,6 +100,11 @@ function create() {
     TLwall.body.immovable = true;
     
     game.add.sprite(0, 0, 'bedroom_background');
+    
+    window_collide = game.add.sprite(187, 70, 'window_collide');
+    game.physics.enable(window_collide, Phaser.Physics.ARCADE);
+    window_collide.body.immovable = true;
+    
 
     Bwall = game.add.sprite(0, 360, 'bottomwall');
     game.physics.enable(Bwall, Phaser.Physics.ARCADE);
@@ -166,6 +185,9 @@ function create() {
     game.physics.enable(info, Phaser.Physics.ARCADE);
     info.body.immovable = true;
     
+
+
+
     
     
     cursors = game.input.keyboard.createCursorKeys();
@@ -195,7 +217,15 @@ function create() {
     
     bird.animations.add('headbob', [0, 1, 2, 1, 0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 15, true);
     bird.animations.play('headbob');
+
+
     
+    
+
+    
+
+    
+
     
     
     
@@ -239,13 +269,13 @@ function update(){
     game.physics.arcade.overlap(bassoverlap, player);
     game.physics.arcade.overlap(prawnspot, player, thought);
     game.physics.arcade.collide(birdcollide, player, birdspeak);
+    
+    game.physics.arcade.collide(window_collide, player, eden);
+    
 
     
 
 
-    
-    //game.physics.arcade.overlap(player, compscrn, collectStar, null, this);
-    
     
     player.body.velocity.x = 0;
     player.body.velocity.y = 0;
@@ -460,6 +490,30 @@ function thought(){
         thght.kill();
     }
 }
+
+function eden(){
+    var msssssssg = game.add.sprite(65, 0, 'lookout');
+    Xkey.onDown.add(closewindow);
+    Zkey.onDown.add(edens);
+    
+    function edens(){
+        player.kill();
+        game.add.sprite(0, 0, 'window_screen');
+        fount = game.add.sprite(150, 220, 'fountain');
+        fount.animations.add('sprinkle', [0, 1, 2], 12, true);
+        fount.animations.play('sprinkle');
+        skies = game.add.sprite(0, 60, 'sky');
+        skies.animations.add('clouds', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22], 3, true);
+        skies.animations.play('clouds');
+ 
+    }
+    
+    function closewindow(){
+        msssssssg.kill();
+    }
+}
+        
+
         
     
     
