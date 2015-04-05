@@ -27,8 +27,7 @@ function create() {
     
     
     swimming = game.add.sprite(0, 0, 'fish');
-    game.physics.arcade.enable(swimming, Phaser.Physics.ARCADE);
-    swimming.body.immovable = true;
+
     
     music = game.add.audio('sound', 1, true);
     
