@@ -27,7 +27,8 @@ function create() {
     
     
     swimming = game.add.sprite(0, 0, 'fish');
-
+    game.physics.enable(swimming, Phaser.Physics.ARCADE);
+    swimming.body.immovable = true;
     
     music = game.add.audio('sound', 1, true);
     
@@ -43,12 +44,9 @@ function create() {
     ikey = game.input.keyboard.addKey(Phaser.Keyboard.I);
     Xkey = game.input.keyboard.addKey(Phaser.Keyboard.X);
     
-    cursors.left.onDown.add(playhigh);
-    cursors.right.onDown.add(playlow);
-    cursors.left.onUp.add(stophigh);
-    cursors.right.onUp.add(stoplow);
+
     
-    swimming.animations.add('fast', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 15, true);
+
     swimming.animations.add('faster', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 30, true);
     swimming.animations.add('slow', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 10, true);
     swimming.animations.add('moderate', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 15, true);
@@ -59,12 +57,14 @@ function create() {
 
 function update(){ 
     
-
     
     swimming.body.velocity.x = 0;
     swimming.body.velocity.y = 0;
     
-
+    cursors.left.onDown.add(playhigh);
+    cursors.right.onDown.add(playlow);
+    cursors.left.onUp.add(stophigh);
+    cursors.right.onUp.add(stoplow);
     
     if (ikey.isDown){
         var infopage = game.add.sprite(0, 0, 'infopage');
