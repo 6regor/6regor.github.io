@@ -101,9 +101,9 @@ function create() {
     
     game.add.sprite(0, 0, 'bedroom_background');
     
-    //window_collide = game.add.sprite(187, 70, 'window_collide');
-    //game.physics.enable(window_collide, Phaser.Physics.ARCADE);
-    //window_collide.body.immovable = true;
+    window_collide = game.add.sprite(187, 70, 'window_collide');
+    game.physics.enable(window_collide, Phaser.Physics.ARCADE);
+    window_collide.body.immovable = true;
     
 
     Bwall = game.add.sprite(0, 360, 'bottomwall');
@@ -270,7 +270,7 @@ function update(){
     game.physics.arcade.overlap(prawnspot, player, thought);
     game.physics.arcade.collide(birdcollide, player, birdspeak);
     
-    //game.physics.arcade.collide(window_collide, player, eden);
+    game.physics.arcade.collide(window_collide, player, eden);
     
 
     
@@ -491,27 +491,27 @@ function thought(){
     }
 }
 
-//function eden(){
-   // var msssssssg = game.add.sprite(65, 0, 'lookout');
-   // Xkey.onDown.add(closewindow);
-  //  Zkey.onDown.add(edens);
+function eden(){
+    var msssssssg = game.add.sprite(65, 0, 'lookout');
+    Xkey.onDown.add(closewindow);
+    Zkey.onDown.add(edens);
     
-  //  function edens(){
-   //     player.kill();
-      //  game.add.sprite(0, 0, 'window_screen');
-      //  fount = game.add.sprite(150, 220, 'fountain');
-      //  fount.animations.add('sprinkle', [0, 1, 2], 12, true);
-      //  fount.animations.play('sprinkle');
-      //  skies = game.add.sprite(0, 60, 'sky');
-      //  skies.animations.add('clouds', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22], 3, true);
-     //   skies.animations.play('clouds');
+    function edens(){
+        player.kill();
+        game.add.sprite(0, 0, 'window_screen');
+        fount = game.add.sprite(150, 220, 'fountain');
+        fount.animations.add('sprinkle', [0, 1, 2], 12, true);
+        fount.animations.play('sprinkle');
+        skies = game.add.sprite(0, 60, 'sky');
+        skies.animations.add('clouds', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22], 3, true);
+        skies.animations.play('clouds');
  
     }
     
-    //function closewindow(){
-  //      msssssssg.kill();
-   // }
-//}
+    function closewindow(){
+        msssssssg.kill();
+    }
+}
         
 
         
