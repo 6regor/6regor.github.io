@@ -1,4 +1,4 @@
-var game = new Phaser.Game(1499, 711, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(1499, 711, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
 
 function preload() {
     this.game.scale.pageAlignHorizontally = true;
