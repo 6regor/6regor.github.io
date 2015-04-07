@@ -15,6 +15,8 @@ function preload() {
     game.load.audio('music', [ 'bust_music.mp3', 'bust_music.ogg' ]);
 }
 
+var music;
+
 function create() {
     
     music = game.add.audio('music', 1, true);
