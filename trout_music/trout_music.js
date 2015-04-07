@@ -25,7 +25,6 @@ var high;
 
 function create() {
     
-    
     swimming = game.add.sprite(0, 0, 'fish');
     game.physics.enable(swimming, Phaser.Physics.ARCADE);
     swimming.body.immovable = true;
@@ -43,8 +42,6 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
     ikey = game.input.keyboard.addKey(Phaser.Keyboard.I);
     Xkey = game.input.keyboard.addKey(Phaser.Keyboard.X);
-    
-
     
 
     swimming.animations.add('faster', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 30, true);
