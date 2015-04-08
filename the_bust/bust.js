@@ -1,5 +1,17 @@
 var game = new Phaser.Game(184, 196, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
 
+var BasicGame = {};
+BasicGame.Boot=function () 
+{
+
+}
+BasicGame.GameState=function()
+{
+
+}
+game.state.add('Boot', BasicGame.Boot);
+game.state.add('GameState', BasicGame.GameState);
+game.state.start('Boot');
 
 
 
