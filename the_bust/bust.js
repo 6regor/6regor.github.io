@@ -1,22 +1,20 @@
 var game = new Phaser.Game(184, 196, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
 
-var BasicGame = {};
-BasicGame.Boot=function () 
-{
-
-}
-BasicGame.GameState=function()
-{
-
-}
-game.state.add('Boot', BasicGame.Boot);
-game.state.add('GameState', BasicGame.GameState);
-game.state.start('Boot');
 
 
 
 
 function preload() {
+    
+    this.preloadBar = game.add.graphics(0, 50);
+    this.preloadBar.lineStyle(3, 0xffffff, 1);
+    this.preloadBar.moveTo(0, 0);
+    this.preloadBar.lineTo(game.width, 0);
+    
+    this.preloadBar.scale.x = 0; // set the bar to the beginning position
+
+
+
     this.game.scale.pageAlignHorizontally = true;
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
@@ -25,6 +23,12 @@ function preload() {
     game.load.spritesheet('bust', 'bust_spritesheet.png', 184, 196, 16);
     
     game.load.audio('music', [ 'bust_music.mp3', 'bust_music.ogg' ]);
+}
+
+function loadUpdate() {
+  // every frame during loading, set the scale.x of the bar to the progress (an integer between 0
+  // and 100) divided by 100 to give a float between 0 and 1
+  this.preloadBar.scale.x = game.load.progress * 0.01;
 }
 
 var music;
