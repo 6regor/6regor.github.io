@@ -19,7 +19,7 @@ var music;
 
 function create() {
     
-    music = game.add.audio('music', 1, true);
+    music = game.add.audio('music', 0.6, true);
     music.play('', 0, 3, true);
 
     
