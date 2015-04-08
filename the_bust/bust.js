@@ -5,6 +5,7 @@ var game = new Phaser.Game(184, 196, Phaser.CANVAS, '', { preload: preload, crea
 
 
 function preload() {
+    
     this.game.scale.pageAlignHorizontally = true;
     this.game.scale.pageAlignVertically = true;
     this.game.scale.refresh();
@@ -18,6 +19,7 @@ function preload() {
 var music;
 
 function create() {
+    
     
     music = game.add.audio('music', 1, true);
     music.play('', 0, 0.5, true);
