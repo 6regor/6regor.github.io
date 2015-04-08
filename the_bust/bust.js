@@ -20,7 +20,7 @@ var music;
 function create() {
     
     music = game.add.audio('music', 1, true);
-    music.play('', 0, 2, true);
+    music.play('', 0, 0.5, true);
 
     
     bust = game.add.sprite(0, 0, 'bust');
