@@ -9,7 +9,7 @@ function preload() {
     game.load.image('island', 'islands.png');
     game.load.spritesheet('raft', 'raft_sprite.png', 60, 60, 12);
     game.load.image('islandoverlap', 'islandoverlap.png');
-    game.load.image('b1', 'b1.png');
+    game.load.image('b1', 'B1.png');
     game.load.image('b2', 'b2.png');
     game.load.image('b3', 'b3.png');
     game.load.image('b4', 'b4.png');
