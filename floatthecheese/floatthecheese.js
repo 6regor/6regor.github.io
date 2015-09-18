@@ -19,7 +19,7 @@ function create() {
     water = game.add.sprite(0, 0, 'flowingwater');
     game.physics.arcade.enable(water, Phaser.Physics.ARCADE);
     
-    player = game.add.sprite(400, game.world.height - 200, 'cheese');
+    player = game.add.sprite(300, game.world.height - 150, 'cheese');
     game.physics.arcade.enable(player, Phaser.Physics.ARCADE);
     
     cursors = game.input.keyboard.createCursorKeys();
