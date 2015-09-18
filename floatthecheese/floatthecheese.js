@@ -24,7 +24,7 @@ function create() {
     
     cursors = game.input.keyboard.createCursorKeys();
     
-    water.animations.add('flow', [0, 1, 2, 3], 9, true);
+    water.animations.add('flow', [0, 1, 2, 3], 3, true);
     
 }
 
