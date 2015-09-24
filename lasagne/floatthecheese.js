@@ -6,7 +6,7 @@ function preload() {
     this.game.scale.refresh();
     
     game.load.image('flowingwater', 'pool.png', 966, 430);
-    game.load.image('cheese', 'cheesesprite.png');
+    game.load.image('cheese', 'las.png');
     
 }
 
